@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>PGIR: Enhancing Control and Expressiveness for Zero Shot Instruct TTS via Perception-Guided Instruction Refinement</title>
+<meta name="generator" content="Jekyll v3.9.0">
+<meta property="og:title" content="PGIR: Enhancing Control and Expressiveness for Zero Shot Instruct TTS via Perception-Guided Instruction Refinement">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<!-- End Jekyll SEO tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body data-new-gr-c-s-check-loaded="14.1023.0" data-gr-ext-installed="">
+    <section class="page-header">
+    <!-- <h1 class="project-name"></h1>
+    <h2 class="project-tagline"></h2> -->
+
+
+    </section>
+
+    <section class="main-content">
+      <h1 id=""><center>PGIR: Enhancing Control and Expressiveness for Zero Shot Instruct TTS via Perception-Guided Instruction Refinement</center></h1>
+      <!-- <h1 id=""><center> Evaluation </center></h1> -->
+
+
+<!-- <center> <b>| Anonymous | </b> </center> -->
+
+
+
+<h2 id="abstract">Abstract</h2>
+<p>
+In the field of controllable speech synthesis, Instruct TTS has recently emerged as a key technology for a wide range of applications, including virtual assistants and audiobook narration, allowing users to control speech style through natural language instructions. However, Instruct TTS still faces significant challenges in achieving precise acoustic control and expressiveness, primarily due to ambiguous user instructions during inference and instruct texts in training datasets that do not correspond to human-perceived speech attributes.To address these challenges, we propose: (1) a Perception‑Guided Instruction Refinement (PGIR) Mapper that disambiguates and clarifies user instructions, (2) a dual‑path Instruct TTS framework that jointly leverages the original and refined instructions, and (3) a human‑perception‑calibrated instruct annotation pipeline for training data. Experiments show that our approach significantly improves controllability and expressiveness in zero‑shot settings. Audio samples are available at https://t1235-ch.github.io/pgpt/.
+</p>
+
+<h2><p class="toc_title">Contents</p></h2>
+<div id="toc_container">
+<ul>
+  <li><a href="#1">Model Architecture</a></li>
+  <li><a href="#2">Comparison Experiments</a></li>
+  <li><a href="#3">Ablation Study</a></li>
+</ul>
+</div>
+
+<a name="1"><h2>Model Architecture</h2></a>
+<div>
+  <br />
+  <p style="text-align: center">
+    <img src="3_01.jpg"/>
+  </p>
+  <p>
+  <figcaption style="text-align:center;">
+    </font>
+    <font size=3>
+      Figure 1: An overview of the PGIR-based Dual-Path Instruct TTS Framework. (A) Dual-Path Instruct TTS Model,(B) PGIR Mapper.
+    </font>
+  </figcaption><br><br>
+  </p>
+
+  <br />
+  <p style="text-align: center">
+    <img src="666_01.jpg" />
+  </p>
+  <p>
+  <figcaption style="text-align:center;">
+    </font>
+    <font size=3>
+      Figure 2: Illustration of the Perception-Aware Speech Annotation Pipeline. (A) Acoustic Feature Extraction,(B) Thresholding and Perception-Guided optimizing, (C) Lexical Stress Modeling, (D) Unified Annotation Generation.
+    </font>
+  </figcaption><br><br>
+  </p>
+
+</div>
+<a name="2"><h2>Comparison Experiments</h2></a>
+<p>
+This work introduces two core innovations: a new Instruct TTS paradigm integrating the PGIR module, and a perception-guided speech annotation pipeline. To validate the effectiveness of these innovations, two sets of comparative experiments are conducted:
+  </p>
+<ul>
+<li>
+<b>Zero-shot Instruct TTS</b>:
+<ul>
+<li>Compare with the open-source Zero-shot Instruct TTS model <a href="https://github.com/FunAudioLLM/CosyVoice"><b>CosyVoice2</b></a></li>
+<li>Compare with <b>CosyVoice2 (with PGIR proposed in this paper)</b> to verify PGIR's generalization ability</li>
+<li>Further contrast <b>CosyVoice2 (with PGIR)</b> with our model (<b>Dual-path Instruct TTS with PGIR</b>) to validate the effectiveness of Dual-path Instruct TTS, focusing on instruction following and expressiveness in zero-shot scenarios</li>
+</ul>
+</li>
+<li>
+<b>Data Pipeline Comparison</b>:
+<ul>
+<li>With the same Llama-based TTS architecture, contrast models trained via <a href="https://github.com/thuhcsi/SpeechCraft"><b>SpeechCraft</b></a> (generic instruction pipeline)</li>
+<li>Compare with models trained via our <b>Perception-Aware Speech Annotation Pipeline</b> to evaluate the impact of annotation quality</li>
+</ul>
+</li>
+</ul>
+<h4>Sample 1</h4>
+<p><b>Text:</b> 卧槽！刚才路过篮球场，看见一大爷用拐杖扣篮了？这身手也太猛了吧！</p>
+<p><b>Instruction:</b> 情绪是惊讶，语气好奇。</p>
+<p><b>The Translation of Instruction:</b> The emotion is surprise, and the tone is curious.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/1/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/1/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/1/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/1/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/1/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 2</h4>
+<p><b>Text:</b> 快看！偶像今晚居然翻我评论了，啊啊啊我现在整个人激动到语无伦次！</p>
+<p><b>Instruction:</b> 情绪是兴奋，语气充满活力。</p>
+<p><b>The Translation of Instruction:</b> The emotion is excitement, and the tone is full of vitality.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/2/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/2/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/2/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/2/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/2/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 3</h4>
+<p><b>Text:</b> 哇塞！周末露营计划终于要实现了，想想就开心到飞起！</p>
+<p><b>Instruction:</b> 情绪积极且充满热情。</p>
+<p><b>The Translation of Instruction:</b> The emotion is positive and full of enthusiasm.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/3/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/3/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/3/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/3/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/3/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 4</h4>
+<p><b>Text:</b> 迟到半小时还慢悠悠？你要是不想来就直说，别耽误大家时间！</p>
+<p><b>Instruction:</b> 情绪是愤怒，语气咄咄逼人。</p>
+<p><b>The Translation of Instruction:</b> The emotion is anger, and the tone is aggressive.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/4/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/4/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/4/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/4/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/4/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 5</h4>
+<p><b>Text:</b> 不对劲！那个戴帽子的人已经跟踪我三条街了，该怎么甩开他？</p>
+<p><b>Instruction:</b> 情绪紧张悬疑，语气急切。</p>
+<p><b>The Translation of Instruction:</b> The emotion is tense and suspenseful, and the tone is urgent.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/5/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/5/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/5/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/5/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/5/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 6</h4>
+<p><b>Text:</b> 我真的撑不下去了，感觉全世界都在和我作对，活着还有什么意思？</p>
+<p><b>Instruction:</b> 情绪强烈且悲伤，语气传达出绝望与无助感。</p>
+<p><b>The Translation of Instruction:</b> The emotion is intense and sorrowful, with a tone conveying despair and a sense of helplessness.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/6/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/6/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/6/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/6/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/6/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 7</h4>
+<p><b>Text:</b> 你到底想怎么样？别在这阴阳怪气，有话直说！</p>
+<p><b>Instruction:</b> 情绪充满攻击性，语气大声且强硬。</p>
+<p><b>The Translation of Instruction:</b> The emotion is aggressive, with a tone that is loud and forceful.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/7/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/7/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/7/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/7/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/7/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 8</h4>
+<p><b>Text:</b> 救命！我在老房子发现暗门，门缝里渗出暗红液体，太诡异了！</p>
+<p><b>Instruction:</b> 情绪紧张悬疑，语气急切。</p>
+<p><b>The Translation of Instruction:</b> The emotion is tense and suspenseful, and the tone is urgent.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/8/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/8/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/8/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/8/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/8/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 9</h4>
+<p><b>Text:</b> 不对劲！那个戴帽子的人已经跟踪我三条街了，该怎么甩开他？</p>
+<p><b>Instruction:</b> 情绪紧张悬疑，语气急切。</p>
+<p><b>The Translation of Instruction:</b> The emotion is tense and suspenseful, and the tone is urgent.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/9/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/9/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/9/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/9/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/9/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 10</h4>
+<p><b>Text:</b> 宝！我考上理想的大学啦！刚查到录取通知，现在想绕操场跑十圈！</p>
+<p><b>Instruction:</b> 情绪是兴奋，语气充满活力。</p>
+<p><b>The Translation of Instruction:</b> The emotion is excitement, and the tone is full of vitality.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/10/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/10/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/10/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/10/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/10/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 11</h4>
+<p><b>Text:</b> 天啊！楼下突然来了辆超酷的跑车，车主到底是谁啊，你看见没？</p>
+<p><b>Instruction:</b> 情绪是惊讶，语气好奇。</p>
+<p><b>The Translation of Instruction:</b> The emotion is surprise, and the tone is curious.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Ours</strong></th>
+      <th style="text-align: center"><strong>CosyVoice2</strong></th>
+            <th style="text-align: center"><strong>CosyVoice2 (with PGIR)</strong></th>
+            <th style="text-align: center"><strong>SpeechCraft</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="mzk/11/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="mzk/11/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/11/2.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/11/3.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="mzk/11/1.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br>
+
+<br>
+
+
+      <a name="3"><h2>Ablation Study</h2></a>
+<p>
+To verify the necessity of key components in our framework, we conduct two ablation experiments by removing critical modules from the proposed model. 
+</p>
+<ul>
+<li>
+<b>-w/o PGIR</b>: This variant removes the Perception-Guided Instruction Refinement module entirely. Results show a drop in IF Score and increased ambiguity in interpreting abstract user instructions, confirming PGIR’s irreplaceable role in refining control signals.
+</li>
+<li>
+<b>-w/o Perception</b>: This variant omits the human listening test calibration step in the annotation pipeline, leading to a decrease in IF Score. This is because speech attributes often mismatch human perceptual judgment, highlighting the importance of aligning annotations with human auditory experiences.
+</li>
+</ul>
+
+      <h4>Sample 1</h4>
+<p><b>Text:</b> 一个人发呆的时候，突然就想起以前的事，眼眶不知不觉就红了。</p>
+<p><b>Instruction:</b> 情绪忧郁，语气轻柔缓慢。</p>
+<p><b>The Translation of Instruction:</b> The emotion is melancholic, and the tone is gentle and slow.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Proposed</strong></th>
+      <th style="text-align: center"><strong>-w/o PGIR</strong></th>
+            <th style="text-align: center"><strong>-w/o Perception (with PGIR)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="ena/1/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="ena/1/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="ena/1/1.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="ena/1/2.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 2</h4>
+<p><b>Text:</b> 明明已经很拼命了，可结果还是这么糟糕，我到底哪里出了问题？</p>
+<p><b>Instruction:</b> 情绪强烈且悲伤，语气传达出绝望与无助感。</p>
+<p><b>The Translation of Instruction:</b> The emotion is intense and sorrowful, with a tone conveying despair and a sense of helplessness.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Proposed</strong></th>
+      <th style="text-align: center"><strong>-w/o PGIR</strong></th>
+            <th style="text-align: center"><strong>-w/o Perception (with PGIR)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="ena/2/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="ena/2/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="ena/2/1.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="ena/2/2.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 3</h4>
+<p><b>Text:</b> 你到底有没有听我说话？每次都这样敷衍，能不能尊重人啊！</p>
+<p><b>Instruction:</b> 情绪是愤怒，语气咄咄逼人。</p>
+<p><b>The Translation of Instruction:</b> The emotion is anger, and the tone is aggressive.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Proposed</strong></th>
+      <th style="text-align: center"><strong>-w/o PGIR</strong></th>
+            <th style="text-align: center"><strong>-w/o Perception (with PGIR)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="ena/3/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="ena/3/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="ena/3/1.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="ena/3/2.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 4</h4>
+<p><b>Text:</b> 一个人发呆的时候，突然就想起以前的事，眼眶不知不觉就红了。</p>
+<p><b>Instruction:</b> 情绪忧郁，语气轻柔缓慢。</p>
+<p><b>The Translation of Instruction:</b> The emotion is melancholic, and the tone is gentle and slow.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Proposed</strong></th>
+      <th style="text-align: center"><strong>-w/o PGIR</strong></th>
+            <th style="text-align: center"><strong>-w/o Perception (with PGIR)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="ena/4/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="ena/4/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="ena/4/1.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="ena/4/2.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 5</h4>
+<p><b>Text:</b> 生活压得我快窒息，真的好想逃离这一切，可我又能逃到哪里去？</p>
+<p><b>Instruction:</b> 情绪强烈且悲伤，语气传达出绝望与无助感。</p>
+<p><b>The Translation of Instruction:</b> The emotion is intense and sorrowful, with a tone conveying despair and a sense of helplessness.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Proposed</strong></th>
+      <th style="text-align: center"><strong>-w/o PGIR</strong></th>
+            <th style="text-align: center"><strong>-w/o Perception (with PGIR)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="ena/5/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="ena/5/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="ena/5/1.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="ena/5/2.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 6</h4>
+<p><b>Text:</b> 等等！你刚说你辞职去卖烤红薯了？这转变也太大了，啥时候的事？</p>
+<p><b>Instruction:</b> 情绪是惊讶，语气好奇。</p>
+<p><b>The Translation of Instruction:</b> The emotion is surprise, and the tone is curious.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Proposed</strong></th>
+      <th style="text-align: center"><strong>-w/o PGIR</strong></th>
+            <th style="text-align: center"><strong>-w/o Perception (with PGIR)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="ena/6/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="ena/6/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="ena/6/1.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="ena/6/2.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 7</h4>
+<p><b>Text:</b> 为什么所有倒霉事都落到我头上，我到底做错了什么，谁能告诉我？</p>
+<p><b>Instruction:</b> 情绪强烈且悲伤，语气传达出绝望与无助感。</p>
+<p><b>The Translation of Instruction:</b> The emotion is intense and sorrowful, with a tone conveying despair and a sense of helplessness.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Proposed</strong></th>
+      <th style="text-align: center"><strong>-w/o PGIR</strong></th>
+            <th style="text-align: center"><strong>-w/o Perception (with PGIR)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="ena/7/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="ena/7/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="ena/7/1.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="ena/7/2.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br><h4>Sample 8</h4>
+<p><b>Text:</b> 不会吧！小区流浪猫居然会自己开垃圾桶盖？这智商也太逆天了！</p>
+<p><b>Instruction:</b> 情绪是惊讶，语气好奇。</p>
+<p><b>The Translation of Instruction:</b> The emotion is surprise, and the tone is curious.</p>
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"><strong>Reference Speech</strong></th>
+      <th style="text-align: center"><strong>Proposed</strong></th>
+      <th style="text-align: center"><strong>-w/o PGIR</strong></th>
+            <th style="text-align: center"><strong>-w/o Perception (with PGIR)</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: left"><audio src="ena/8/ref.wav" controls="" preload=""></audio></td>
+   <td style="text-align: left"><audio src="ena/8/0.wav" controls="" preload=""></audio></td>
+      <td style="text-align: left"><audio src="ena/8/1.wav" controls="" preload=""></audio></td>
+            <td style="text-align: left"><audio src="ena/8/2.wav" controls="" preload=""></audio></td>
+  </tbody>
+</table>
+<br>
+<br>
+<br>
+
+    </section>
+
+</body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
