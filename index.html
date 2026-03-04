@@ -3,9 +3,9 @@
    
 
 <!-- Begin Jekyll SEO tag v2.7.1 -->
-<title>PGIR: Enhancing Control and Expressiveness for Zero Shot Instruct TTS via Perception-Guided Instruction Refinement</title>
+<title>PGIR: Perception-Guided Instruction Refinement for Precise Control and Rich Expressiveness in Zero-Shot Instruct TTS</title>
 <meta name="generator" content="Jekyll v3.9.0">
-<meta property="og:title" content="PGIR: Enhancing Control and Expressiveness for Zero Shot Instruct TTS via Perception-Guided Instruction Refinement">
+<meta property="og:title" content="PGIR: Perception-Guided Instruction Refinement for Precise Control and Rich Expressiveness in Zero-Shot Instruct TTS">
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary">
 <!-- End Jekyll SEO tag -->
@@ -22,7 +22,7 @@
     </section>
 
     <section class="main-content">
-      <h1 id=""><center>PGIR: Enhancing Control and Expressiveness for Zero Shot Instruct TTS via Perception-Guided Instruction Refinement</center></h1>
+      <h1 id=""><center>PGIR: Perception-Guided Instruction Refinement for Precise Control and Rich Expressiveness in Zero-Shot Instruct TTS</center></h1>
       <!-- <h1 id=""><center> Evaluation </center></h1> -->
 
 
@@ -32,7 +32,7 @@
 
 <h2 id="abstract">Abstract</h2>
 <p>
-In the field of controllable speech synthesis, Instruct TTS has recently emerged as a key technology for a wide range of applications, including virtual assistants and audiobook narration, allowing users to control speech style through natural language instructions. However, Instruct TTS still faces significant challenges in achieving precise acoustic control and expressiveness, primarily due to ambiguous user instructions during inference and instruct texts in training datasets that do not correspond to human-perceived speech attributes.To address these challenges, we propose: (1) a Perception‑Guided Instruction Refinement (PGIR) Mapper that disambiguates and clarifies user instructions, (2) a dual‑path Instruct TTS framework that jointly leverages the original and refined instructions, and (3) a human‑perception‑calibrated instruct annotation pipeline for training data. Experiments show that our approach significantly improves controllability and expressiveness in zero‑shot settings. Audio samples are available at https://t1235-ch.github.io/pgpt/.
+Zero-shot Instruct TTS has significantly advanced speech synthesis, yet it remains bottlenecked by the inherent abstraction and ambiguity of user-provided instructions. Such abstract descriptions during inference, coupled with training annotations that deviate from human auditory perception, result in a significant loss of precise controllability and expressive richness. To bridge this gap, we propose: (1) a Perception-Guided Instruction Refinement (PGIR) Mapper that translates abstract, underspecified instructions into standardized perceptual attributes using domain knowledge; (2) a dual-path architecture that concurrently processes raw and refined instructions to preserve intent while ensuring control ; and (3) a human-perception-calibrated annotation pipeline for training data. Experimental results demonstrate that our framework substantially enhances instruction following and speech expressiveness in zero-shot scenarios.
 </p>
 
 <h2><p class="toc_title">Contents</p></h2>
@@ -48,26 +48,41 @@ In the field of controllable speech synthesis, Instruct TTS has recently emerged
 <div>
   <br />
   <p style="text-align: center">
-    <img src="3_01.jpg"/>
+    <img src="7k.png"/>
   </p>
   <p>
   <figcaption style="text-align:center;">
     </font>
     <font size=3>
-      Figure 1: An overview of the PGIR-based Dual-Path Instruct TTS Framework. (A) Dual-Path Instruct TTS Model,(B) PGIR Mapper.
+      Figure 1: Comparison of Approaches to Instruct TTS.
     </font>
   </figcaption><br><br>
   </p>
 
   <br />
   <p style="text-align: center">
-    <img src="666_01.jpg" />
+    <img src="743.jpg" />
   </p>
   <p>
   <figcaption style="text-align:center;">
     </font>
     <font size=3>
-      Figure 2: Illustration of the Perception-Aware Speech Annotation Pipeline. (A) Acoustic Feature Extraction,(B) Thresholding and Perception-Guided optimizing, (C) Lexical Stress Modeling, (D) Unified Annotation Generation.
+      Figure 2: An overview of the PGIR-based Dual-Path Instruct TTS Framework.
+    </font>
+  </figcaption><br><br>
+  </p>
+
+    <br />
+  <p style="text-align: center">
+    <img src="567k.png" />
+  </p>
+  <p>
+  <figcaption style="text-align:center;">
+    </font>
+    <font size=3>
+      Figure 3: The proposed Perception-Aware Instruction Annotation Pipeline. (A) Multi-source acoustic feature extraction. (B) Perception-guided
+optimization strategies, including silence exclusion, training-only bufer categories for boundary sharpening,and human humanauditory
+calibration. (C) Lexical stress modeling via delta-quantification. (D) Unified generation of refined instructions.
     </font>
   </figcaption><br><br>
   </p>
